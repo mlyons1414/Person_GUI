@@ -15,7 +15,8 @@ import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
 
 public class MainFrame extends JFrame {
-
+	
+	//MainFrame Components
 	private TextPanel textPanel;
 	private JButton btn;
 	private ToolBar toolbar;
@@ -32,6 +33,7 @@ public class MainFrame extends JFrame {
 		formPanel = new FormPanel();
 		
 		fileChooser = new JFileChooser();
+		fileChooser.addChoosableFileFilter(new PersonFileFilter());
 
 		setJMenuBar(createMenuBar());
 
@@ -60,7 +62,7 @@ public class MainFrame extends JFrame {
 
 		add(formPanel, BorderLayout.WEST);
 		add(textPanel, BorderLayout.CENTER);
-		// add(toolbar, BorderLayout.NORTH);
+		//add(toolbar, BorderLayout.NORTH);
 
 		setMinimumSize(new Dimension(500,400));
 		setSize(600, 500);
@@ -71,6 +73,8 @@ public class MainFrame extends JFrame {
 	}
 
 	public JMenuBar createMenuBar() {
+		
+		//Set Up JMenu
 		JMenuBar menuBar = new JMenuBar();
 
 		JMenu fileMenu = new JMenu("File");
@@ -95,6 +99,7 @@ public class MainFrame extends JFrame {
 		menuBar.add(fileMenu);
 		menuBar.add(windowMenu);
 
+		//Form Panel ActionListner
 		showFormItem.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -104,10 +109,13 @@ public class MainFrame extends JFrame {
 			}
 
 		});
+		
+		//Mnemonics & Accelerators
 		fileMenu.setMnemonic(KeyEvent.VK_F);
 		exitItem.setMnemonic(KeyEvent.VK_X);
 		exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
 		
+		//Import ActionListener
 		importDataItem.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -118,6 +126,7 @@ public class MainFrame extends JFrame {
 			
 		});
 		
+		//Export ActionListener
 		exportDataItem.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -127,6 +136,8 @@ public class MainFrame extends JFrame {
 			}
 			
 		});
+		
+		//Exit ActionListener
 		exitItem.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
