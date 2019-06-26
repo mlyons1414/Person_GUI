@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.List;
+
 import gui.Category;
 import gui.FormEvent;
 import model.AgeCategory;
@@ -10,6 +12,11 @@ import model.Person;
 
 public class Controller {
 	DataBase db = new DataBase();
+	
+	public List<Person> getPeople() {
+		return db.getPeople();
+	}
+	
 	public void addPerson(FormEvent e) {
 		String name = e.getName();
 		String occupation = e.getOccupation();
@@ -33,13 +40,13 @@ public class Controller {
 		}
 		
 		EmploymentCategory empCat;
-		if(emp.equals("Employed")) {
+		if(emp.getID() == 0) {
 			empCat = EmploymentCategory.employed;
 		}
-		else if(emp.equals("Self-Employed")) {
+		else if(emp.getID() == 1) {
 			empCat = EmploymentCategory.selfemployed;
 		}
-		else if(emp.equals("Unemployed")) {
+		else if(emp.getID() == 2) {
 			empCat = EmploymentCategory.unemployed;
 		}
 		else empCat = EmploymentCategory.other;
@@ -54,7 +61,7 @@ public class Controller {
 			genderCat = GenderCategory.female;
 		}
 		
-		Person person = new Person(name, occupation, ageCat, empCat, taxID, isUS, genderCat);
+		Person person = new Person(name, genderCat, occupation, ageCat, empCat, isUS, taxID);
 		db.addPerson(person);
 		
 	}

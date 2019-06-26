@@ -26,17 +26,21 @@ public class MainFrame extends JFrame {
 	private FormPanel formPanel;
 	private JFileChooser fileChooser;
 	private Controller controller;
+	private TablePanel tablePanel;
 
 	public MainFrame() {
-		super("Hello World");
+		super("Person DataBase");
 
 		setLayout(new BorderLayout());
 
 		textPanel = new TextPanel();
 		toolbar = new ToolBar();
 		formPanel = new FormPanel();
+		tablePanel = new TablePanel();
 		
 		controller = new Controller();
+		
+		tablePanel.setData(controller.getPeople());
 		
 		fileChooser = new JFileChooser();
 		fileChooser.addChoosableFileFilter(new PersonFileFilter());
@@ -51,28 +55,17 @@ public class MainFrame extends JFrame {
 
 		formPanel.setFormListener(new FormListener() {
 			public void FormEventOcc(FormEvent e) {
-				String name = e.getName();
-				String occupation = e.getOccupation();
-				Category age = e.getAge();
-				Category cat = e.getEmp();
-				String tax = e.getTax();
-				boolean isCitizen = e.isusCitizen();
-				String gender = e.getGender();
-
-				if (name.equals("") && occupation.equals("")) {
-				} else
-					textPanel.appendText(name + ": " + gender + ": " + occupation + ": " + age + ": " + cat + ": "
-							+ isCitizen + ": " + tax + "\n");
 				controller.addPerson(e);
+				tablePanel.refresh();
 			}
 		});
 
 		add(formPanel, BorderLayout.WEST);
-		add(textPanel, BorderLayout.CENTER);
+		add(tablePanel, BorderLayout.CENTER);
 		//add(toolbar, BorderLayout.NORTH);
 
-		setMinimumSize(new Dimension(500,400));
-		setSize(600, 500);
+		setMinimumSize(new Dimension(700,600));
+		setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		setVisible(true);
