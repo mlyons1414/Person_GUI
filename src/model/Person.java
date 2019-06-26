@@ -14,7 +14,7 @@ public class Person {
 	private GenderCategory gender;
 	
 	
-	public Person(int id, String name, String occupation, AgeCategory age, EmploymentCategory emp, String tax,
+	public Person(String name, String occupation, AgeCategory age, EmploymentCategory emp, String tax,
 			boolean usCitizen, GenderCategory gender) {
 		super();
 		this.id = count;

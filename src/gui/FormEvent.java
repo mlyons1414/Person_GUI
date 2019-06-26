@@ -81,6 +81,14 @@ public class FormEvent extends EventObject {
 		return age;
 	}
 	
+	public boolean isUsCitizen() {
+		return usCitizen;
+	}
+
+	public void setUsCitizen(boolean usCitizen) {
+		this.usCitizen = usCitizen;
+	}
+
 	public Category getEmp() {
 		return emp;
 	}
