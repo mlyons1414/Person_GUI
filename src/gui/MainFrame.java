@@ -1,25 +1,31 @@
 package gui;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import controller.Controller;
 
 public class MainFrame extends JFrame {
-	
-	//MainFrame Components
+
+	// MainFrame Components
 	private TextPanel textPanel;
 	private JButton btn;
 	private ToolBar toolbar;
@@ -37,11 +43,11 @@ public class MainFrame extends JFrame {
 		toolbar = new ToolBar();
 		formPanel = new FormPanel();
 		tablePanel = new TablePanel();
-		
+
 		controller = new Controller();
-		
+
 		tablePanel.setData(controller.getPeople());
-		
+
 		fileChooser = new JFileChooser();
 		fileChooser.addChoosableFileFilter(new PersonFileFilter());
 
@@ -62,10 +68,10 @@ public class MainFrame extends JFrame {
 
 		add(formPanel, BorderLayout.WEST);
 		add(tablePanel, BorderLayout.CENTER);
-		//add(toolbar, BorderLayout.NORTH);
+		// add(toolbar, BorderLayout.NORTH);
 
-		setMinimumSize(new Dimension(700,600));
-		setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		setMinimumSize(new Dimension(700, 600));
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		setVisible(true);
@@ -73,8 +79,8 @@ public class MainFrame extends JFrame {
 	}
 
 	public JMenuBar createMenuBar() {
-		
-		//Set Up JMenu
+
+		// Set Up JMenu
 		JMenuBar menuBar = new JMenuBar();
 
 		JMenu fileMenu = new JMenu("File");
@@ -99,7 +105,7 @@ public class MainFrame extends JFrame {
 		menuBar.add(fileMenu);
 		menuBar.add(windowMenu);
 
-		//Form Panel ActionListner
+		// Form Panel ActionListner
 		showFormItem.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -109,35 +115,47 @@ public class MainFrame extends JFrame {
 			}
 
 		});
-		
-		//Mnemonics & Accelerators
+
+		// Mnemonics & Accelerators
 		fileMenu.setMnemonic(KeyEvent.VK_F);
+		windowMenu.setMnemonic(KeyEvent.VK_W);
 		exitItem.setMnemonic(KeyEvent.VK_X);
 		exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
-		
-		//Import ActionListener
+
+		// Import ActionListener
 		importDataItem.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
 				if (fileChooser.showOpenDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
-					System.out.println(fileChooser.getSelectedFile());
+					try {
+						controller.loadFromFile(fileChooser.getSelectedFile());
+						tablePanel.refresh();
+					} catch (IOException e1) {
+						JOptionPane.showMessageDialog(MainFrame.this, "Could not load data from file.", "Error",
+								JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			}
-			
+
 		});
-		
-		//Export ActionListener
+
+		// Export ActionListener
 		exportDataItem.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
 				if (fileChooser.showSaveDialog(MainFrame.this) == JFileChooser.APPROVE_OPTION) {
-					System.out.println(fileChooser.getSelectedFile());
+					try {
+						controller.saveToFile(fileChooser.getSelectedFile());
+					} catch (IOException e1) {
+						JOptionPane.showMessageDialog(MainFrame.this, "Could not save data to file.", "Error",
+								JOptionPane.ERROR_MESSAGE);
+					}
 				}
 			}
-			
+
 		});
-		
-		//Exit ActionListener
+
+		// Exit ActionListener
 		exitItem.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -149,7 +167,6 @@ public class MainFrame extends JFrame {
 			}
 
 		});
-
 
 		return menuBar;
 	}

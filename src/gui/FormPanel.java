@@ -119,6 +119,13 @@ public class FormPanel extends JPanel{
 				if(formListener != null) {
 					formListener.FormEventOcc(ev);
 				}
+
+				nameField.setText("");
+				occupationField.setText("");
+				ageList.setSelectedIndex(0);
+				empCombo.setSelectedIndex(0);
+				taxField.setText("");
+				maleRadio.setSelected(true);
 		}});
 		
 		 
